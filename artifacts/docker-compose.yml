@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+#  mysql:
+#    image: mysql
+#    ports:
+#      - '3306:3306'
+#    volumes:
+#      - ./data:/var/lib/mysql
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=passwd
+#      - MYSQL_PASS=pass
+#      - MYSQL_USER=app
+#      - MYSQL_DATABASE=app
+
+  nodejs:
+    image: node:18-alpine
+    ports:
+      - '9999:9999'
+    volumes:
+      - ./artifacts/gate-simulator:/home/node/app
+
