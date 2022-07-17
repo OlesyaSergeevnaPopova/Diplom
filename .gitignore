@@ -45,3 +45,5 @@ out/
 !**/src/test/**
 /driver/
 /data/
+/artifacts/gate-simulator/node_modules/
+/artifacts/data/
