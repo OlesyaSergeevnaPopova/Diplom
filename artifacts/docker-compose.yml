@@ -1,14 +1,14 @@
 version: '3.7'
 services:
   mysql:
-    image: mysql
+    image: mysql:latest
     ports:
       - '3306:3306'
     volumes:
       - ./data:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=passwd
-      - MYSQL_PASS=pass
+      - MYSQL_PASSWORD=pass
       - MYSQL_USER=app
       - MYSQL_DATABASE=app
 
@@ -20,4 +20,13 @@ services:
       - ./gate-simulator:/home/node/app
     working_dir: /home/node/app
     command: npm start
+
+  postgresdb:
+    image: postgres:latest
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_DB=app
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=pass
 
