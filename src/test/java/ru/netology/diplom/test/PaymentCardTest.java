@@ -3,16 +3,15 @@ package ru.netology.diplom.test;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
-import lombok.val;
 import org.junit.jupiter.api.*;
-import ru.netology.diplom.data.BdHelper;
+import ru.netology.diplom.data.DbHelper;
 import ru.netology.diplom.data.DataHelper;
 import ru.netology.diplom.pages.TravelPage;
 
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.netology.diplom.data.BdHelper.cleanDataBase;
+import static ru.netology.diplom.data.DbHelper.cleanDataBase;
 
 
 public class PaymentCardTest {
@@ -38,21 +37,21 @@ public class PaymentCardTest {
     class shouldHappyPathForCardWithDifferentStatus {
         @Test
         void shouldSuccessWithValidDebitCard() {
-            val validCardInformation = DataHelper.getValidCardInformation();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var validCardInformation = DataHelper.getValidCardInformation();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(validCardInformation);
             paymentPage.approved();
-            assertEquals("APPROVED", BdHelper.getPurchaseByDebitCard());
+            assertEquals("APPROVED", DbHelper.getPurchaseByDebitCard());
         }
 
 
         @Test
         void shouldUnsuccessWithInvalidDebitCard() {
-            val invalidCardInformation = DataHelper.getInvalidCardInformation();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var invalidCardInformation = DataHelper.getInvalidCardInformation();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(invalidCardInformation);
             paymentPage.declined();
-            assertEquals("DECLINED", BdHelper.getPurchaseByDebitCard());
+            assertEquals("DECLINED", DbHelper.getPurchaseByDebitCard());
         }
     }
 
@@ -60,8 +59,8 @@ public class PaymentCardTest {
     class shouldInvalidCardNumber {
         @Test
         void shouldGetNotificationEmptyFields() {
-            val incorrectCardInfo = DataHelper.getInvalidCardDataIfEmptyAllFields();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var incorrectCardInfo = DataHelper.getInvalidCardDataIfEmptyAllFields();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(incorrectCardInfo);
             paymentPage.shouldEmptyFieldNotification();
             paymentPage.shouldImproperFormatNotification();
@@ -74,24 +73,24 @@ public class PaymentCardTest {
 
         @Test
         public void shouldFailurePaymentIfEmptyNumberCard() {
-            val incorrectCardInfo = DataHelper.getInvalidCardWithNumberEmpty();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var incorrectCardInfo = DataHelper.getInvalidCardWithNumberEmpty();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(incorrectCardInfo);
             paymentPage.shouldValueFieldNumberCard();
         }
 
         @Test
         public void shouldIncorrectFieldNumberCardMiniNumber() {
-            val incorrectCardInfo = DataHelper.getInvalidCardWithIncorrectNumber();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var incorrectCardInfo = DataHelper.getInvalidCardWithIncorrectNumber();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(incorrectCardInfo);
             paymentPage.shouldValueFieldNumberCard();
         }
 
         @Test
         public void shouldIncorrectFieldNumberCardOtherNumber() {
-            val incorrectCardInfo = DataHelper.getInvalidCardNumberIfOutOfDatabase();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var incorrectCardInfo = DataHelper.getInvalidCardNumberIfOutOfDatabase();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(incorrectCardInfo);
             paymentPage.declined();
         }
@@ -101,8 +100,8 @@ public class PaymentCardTest {
     class shouldInvalidCardFieldMonth {
         @Test
         public void shouldInvalidMonthIfEmpty() {
-            val incorrectCardInfo = DataHelper.getInvalidMonthIfEmpty();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var incorrectCardInfo = DataHelper.getInvalidMonthIfEmpty();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(incorrectCardInfo);
             paymentPage.shouldValueFieldMonth();
 
@@ -110,8 +109,8 @@ public class PaymentCardTest {
 
         @Test
         public void shouldInvalidNumberOfMonthIfMore12() {
-            val incorrectCardInfo = DataHelper.getInvalidNumberOfMonthIfMore12();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var incorrectCardInfo = DataHelper.getInvalidNumberOfMonthIfMore12();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(incorrectCardInfo);
             paymentPage.shouldInvalidExpiredDateNotification();
 
@@ -119,8 +118,8 @@ public class PaymentCardTest {
 
         @Test
         public void shouldInvalidNumberOfMonthIfOneDigit() {
-            val incorrectCardInfo = DataHelper.getInvalidNumberOfMonthWhenOneDigit();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var incorrectCardInfo = DataHelper.getInvalidNumberOfMonthWhenOneDigit();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(incorrectCardInfo);
             paymentPage.shouldValueFieldMonth();
 
@@ -128,8 +127,8 @@ public class PaymentCardTest {
 
         @Test
         public void shouldInvalidNumberOfMonthIfZero() {
-            val incorrectCardInfo = DataHelper.getInvalidNumberOfMonthIfZero();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var incorrectCardInfo = DataHelper.getInvalidNumberOfMonthIfZero();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(incorrectCardInfo);
             paymentPage.declined();
             paymentPage.shouldValueFieldMonth();
@@ -140,16 +139,16 @@ public class PaymentCardTest {
     class shouldInvalidCardFieldYear {
         @Test
         public void shouldInvalidYearIfZero() {
-            val incorrectCardInfo = DataHelper.getInvalidYearIfZero();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var incorrectCardInfo = DataHelper.getInvalidYearIfZero();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(incorrectCardInfo);
             paymentPage.shouldExpiredDatePassNotification();
         }
 
         @Test
         public void shouldInvalidYearIfInTheFarFuture() {
-            val incorrectCardInfo = DataHelper.getInvalidYearIfInTheFarFuture();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var incorrectCardInfo = DataHelper.getInvalidYearIfInTheFarFuture();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(incorrectCardInfo);
             paymentPage.shouldInvalidExpiredDateNotification();
 
@@ -157,8 +156,8 @@ public class PaymentCardTest {
 
         @Test
         public void shouldInvalidNumberOfYearIfOneDigit() {
-            val incorrectCardInfo = DataHelper.getInvalidNumberOfYearIfOneDigit();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var incorrectCardInfo = DataHelper.getInvalidNumberOfYearIfOneDigit();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(incorrectCardInfo);
             paymentPage.shouldValueFieldYear();
 
@@ -166,16 +165,16 @@ public class PaymentCardTest {
 
         @Test
         public void shouldInvalidYearIfEmpty() {
-            val incorrectCardInfo = DataHelper.getInvalidYearIfEmpty();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var incorrectCardInfo = DataHelper.getInvalidYearIfEmpty();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(incorrectCardInfo);
             paymentPage.shouldValueFieldYear();
         }
 
         @Test
         public void shouldInvalidYearIfBeforeCurrentYear() {
-            val incorrectCardInfo = DataHelper.getInvalidPastYear();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var incorrectCardInfo = DataHelper.getInvalidPastYear();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(incorrectCardInfo);
             paymentPage.shouldExpiredDatePassNotification();
 
@@ -186,16 +185,16 @@ public class PaymentCardTest {
     class shouldInvalidCardFieldOwner {
         @Test
         public void shouldInvalidCardHolderNameIfEmpty() {
-            val incorrectCardInfo = DataHelper.getInvalidCardHolderNameIfEmpty();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var incorrectCardInfo = DataHelper.getInvalidCardHolderNameIfEmpty();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(incorrectCardInfo);
             paymentPage.shouldValueFieldHolder();
         }
 
         @Test
         public void shouldInvalidCardOwnerNameIfNumericAndSpecialCharacters() {
-            val incorrectCardInfo = DataHelper.getInvalidCardOwnerNameIfNumericAndSpecialCharacters();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var incorrectCardInfo = DataHelper.getInvalidCardOwnerNameIfNumericAndSpecialCharacters();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(incorrectCardInfo);
             paymentPage.declined();
             paymentPage.shouldValueFieldHolder2();
@@ -204,8 +203,8 @@ public class PaymentCardTest {
 
         @Test
         public void shouldInvalidCardOwnerNameIfRussianLetters() {
-            val incorrectCardInfo = DataHelper.getInvalidCardHolderNameIfRussianLetters();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var incorrectCardInfo = DataHelper.getInvalidCardHolderNameIfRussianLetters();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(incorrectCardInfo);
             paymentPage.declined();
             paymentPage.shouldValueFieldHolder2();
@@ -216,32 +215,32 @@ public class PaymentCardTest {
     class shouldInvalidCardFieldCodeCVC {
         @Test
         public void shouldInvalidCvcIfEmpty() {
-            val incorrectCardInfo = DataHelper.getInvalidCvcIfEmpty();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var incorrectCardInfo = DataHelper.getInvalidCvcIfEmpty();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(incorrectCardInfo);
             paymentPage.shouldValueFieldCodeCVC();
         }
 
         @Test
         public void shouldInvalidCvcIfOneDigit() {
-            val incorrectCardInfo = DataHelper.getInvalidCvcIfOneDigit();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var incorrectCardInfo = DataHelper.getInvalidCvcIfOneDigit();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(incorrectCardInfo);
             paymentPage.shouldValueFieldCodeCVC();
         }
 
         @Test
         public void shouldInvalidCvcIfTwoDigits() {
-            val incorrectCardInfo = DataHelper.getInvalidCvcIfTwoDigits();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var incorrectCardInfo = DataHelper.getInvalidCvcIfTwoDigits();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(incorrectCardInfo);
             paymentPage.shouldValueFieldCodeCVC();
         }
 
         @Test
         public void shouldInvalidCvvIfThreeZero() {
-            val incorrectCardInfo = DataHelper.getInvalidCvvIfThreeZero();
-            val paymentPage = new TravelPage().selectBuyByDebitCard();
+            var incorrectCardInfo = DataHelper.getInvalidCvvIfThreeZero();
+            var paymentPage = new TravelPage().selectBuyByDebitCard();
             paymentPage.fillCardInformationForSelectedWay(incorrectCardInfo);
             paymentPage.declined();
             paymentPage.shouldValueFieldCodeCVC();
