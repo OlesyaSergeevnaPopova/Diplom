@@ -36,3 +36,7 @@ java "-Dspring.datasource.url=jdbc:postgresql://localhost:5432/app" -jar ./artif
 ### Просмотр результата тестов
 Результат тестов можно просмотреть в 
 ./build/reports/tests/test/index.html
+
+## Отчеты
+Отчет по итогам тестирования [REPORT.md](https://github.com/OlesyaSergeevnaPopova/Diplom/blob/master/REPORT.md)  
+Отчет по итогам автоматизации [SUMMARY.md](https://github.com/OlesyaSergeevnaPopova/Diplom/blob/master/SUMMARY.md)  
